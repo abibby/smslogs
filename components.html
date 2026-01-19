@@ -1,0 +1,119 @@
+{{ define "index" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS</title>
+    <style>
+        .thread {
+            display: none;
+        }
+
+        .show-thread {
+            display: none;
+        }
+
+        .show-thread:checked+.thread {
+            display: block;
+        }
+
+        .message-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .message {
+            margin-top: 1rem;
+        }
+
+        .incoming+.incoming,
+        .outgoing+.outgoing {
+            margin-top: 0.25rem;
+        }
+
+        .incoming+.incoming .body {
+            border-top-left-radius: 0.25rem;
+        }
+
+        .incoming:has(+ .incoming) .body {
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .outgoing+.outgoing .body {
+            border-top-right-radius: 0.25rem;
+        }
+
+        .outgoing:has(+ .outgoing) .body {
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .outgoing {
+            text-align: right;
+        }
+
+        .outgoing * {
+            text-align: left;
+        }
+
+        .time {
+            display: none;
+        }
+
+        .show-time {
+            display: none;
+        }
+
+        .show-time:checked+.time {
+            display: block;
+            opacity: 50%;
+            text-align: center;
+        }
+
+        .body {
+            display: inline-block;
+            background-color: #eee;
+            border-radius: 0.75rem;
+            max-width: 90%;
+            min-width: 0;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .outgoing .body {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        {{ range . }}
+        <li>
+            <label for="show-thread-{{.PhoneNumber}}">{{ .PhoneNumber }} {{ .LastDateSentDiff }}</label>
+        </li>
+        {{ end }}
+    </ul>
+
+    {{ range . }}
+    <input id="show-thread-{{.PhoneNumber}}" class="show-thread" type="radio" name="thread" value="{{ .PhoneNumber }}">
+    <section class="thread">
+        <h2>{{.PhoneNumber}}</h2>
+        <ul class="message-list">
+            {{ range .Messages }}
+            <li class="message {{ if .Outgoing }}outgoing{{ else }}incoming{{ end }}">
+                <label>
+                    <input class="show-time" type="checkbox">
+                    <div class="time">{{ .DateSentDiff }}</div>
+                    <div class="body">{{ .Body }}</div>
+                </label>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+    {{ end }}
+</body>
+
+</html>
+{{ end }}
