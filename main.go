@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/mergestat/timediff"
 	"github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
